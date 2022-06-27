@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'mptt',
     'django_filters',
 
-    'mind_palace.application',
     'mind_palace.user',
     'mind_palace.palace',
     'mind_palace.palace.node',

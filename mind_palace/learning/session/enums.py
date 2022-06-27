@@ -1,4 +1,4 @@
-from mind_palace.application.enums import DjangoChoicesEnum
+from mind_palace.core.enums import DjangoChoicesEnum
 
 
 class UserLearningSessionStatusEnum(DjangoChoicesEnum):

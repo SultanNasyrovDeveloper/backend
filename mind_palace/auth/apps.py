@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ApplicationConfig(AppConfig):
+class AuthConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mind_palace.application'
+    name = 'mind_palace.auth'
