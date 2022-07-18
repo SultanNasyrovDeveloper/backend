@@ -1,16 +1,24 @@
 import os
 from pathlib import Path
-from datetime import timedelta
 
+from yaml import load
+try:
+    from yaml import CLoader as Loader, CDumper as Dumper
+except ImportError:
+    from yaml import Loader, Dumper
 
-DEBUG = True
-SECRET_KEY = 'django-insecure-ya*p^u73z6(s##*w#emo^%7w#_+ubb+y9qx3ov7ti@w$talz(i'
+with open('config.yml') as file:
+    config = load(file, Loader=Loader)
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-ALLOWED_HOSTS = ['*']
+DEBUG = config.get('debug', False)
+SECRET_KEY = config.get('secretKey')
+ALLOWED_HOSTS = config.get('allowedHosts')
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = config.get('allowedCorsOrigins')
 AUTH_USER_MODEL = 'user.User'
-CSRF_COOKIE_SECURE = False
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'mptt',
     'django_filters',
+    'djoser',
 
     'mind_palace.user',
     'mind_palace.palace',
@@ -32,6 +41,14 @@ INSTALLED_APPS = [
     'mind_palace.learning.session',
     # 'mind_palace.learning.node_config',
 ]
+
+smtp_config = config.get('smtp')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = smtp_config.get('host')
+EMAIL_PORT = smtp_config.get('port')
+EMAIL_HOST_USER = smtp_config.get('user')
+EMAIL_HOST_PASSWORD = smtp_config.get('password')
+EMAIL_USE_TLS = smtp_config.get('useTLS')
 
 
 # APPLICATION SETTING
@@ -65,31 +82,27 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    # 'ROTATE_REFRESH_TOKENS': False,
-    # 'BLACKLIST_AFTER_ROTATION': True,
-    # 'UPDATE_LAST_LOGIN': False,
-    #
-    # 'ALGORITHM': 'HS256',
-    # 'SIGNING_KEY': settings.SECRET_KEY,
-    # 'VERIFYING_KEY': None,
-    # 'AUDIENCE': None,
-    # 'ISSUER': None,
-    #
-    # 'AUTH_HEADER_TYPES': ('Bearer',),
-    # 'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-    # 'USER_ID_FIELD': 'id',
-    # 'USER_ID_CLAIM': 'user_id',
-    #
-    # 'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    # 'TOKEN_TYPE_CLAIM': 'token_type',
-    #
-    # 'JTI_CLAIM': 'jti',
-    #
-    # 'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    # 'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-    # 'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('JWT', ),
+}
+
+DOMAIN = 'localhost:3000'
+SITE_NAME = 'Mind Palace'
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user': 'mind_palace.user.serializers.UserSerializer',
+        'user_create': 'mind_palace.user.serializers.UserSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+    }
 }
 
 ROOT_URLCONF = 'mind_palace.urls'
@@ -112,19 +125,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mind_palace.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+postgres_config = config.get('postgres')
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'mind_palace'),
-        'USER': os.environ.get('POSTGRES_USER', 'mind_palace'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '1Qetuwry'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-        'PORT': 5432,
+        'ENGINE': postgres_config.get('driver', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': postgres_config.get('name'),
+        'USER': postgres_config.get('user'),
+        'PASSWORD': postgres_config.get('password'),
+        'HOST': postgres_config.get('host'),
+        'PORT': postgres_config.get('port', 5432),
     }
-
 }
 
 # SQL request logging settings
@@ -150,8 +160,7 @@ DATABASES = {
 #     }
 # }
 
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -168,26 +177,15 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = '/static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
+STATIC_ROOT = Path(BASE_DIR, 'static')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

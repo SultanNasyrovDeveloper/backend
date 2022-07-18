@@ -1,22 +1,16 @@
+from djoser.serializers import (
+    UserCreateSerializer as DjoserUserCreateSerializer
+)
 from rest_framework import serializers
 
 from . import models
 
 
-class UserSignUpCredentialsSerializer(serializers.ModelSerializer):
+class UserSerializer(DjoserUserCreateSerializer):
 
-    class Meta:
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+
+    class Meta(DjoserUserCreateSerializer.Meta):
         model = models.User
-        fields = ('username', 'password')
-
-    def create(self, validated_data):
-        return models.User.objects.create_user(**validated_data)
-
-
-class UserSerializer(serializers.ModelSerializer):
-
-    mind_palace_root = serializers.IntegerField(source='mind_palace.root_id')
-
-    class Meta:
-        model = models.User
-        exclude = ('password', )
+        fields = ('id', 'email', 'first_name', 'last_name', 'password')

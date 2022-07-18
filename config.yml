@@ -1,0 +1,25 @@
+debug: true
+secretKey: 'yMa*_=4^3h:bL^bz{wmM=K@5FqL)CE^Pg&9;^R4Y5hyL;]]7ERWT,XL#(KKa}m)wLtFP,/fviD@n!.Z+'
+
+frontendUrl: 'localhost'
+
+allowedHosts:
+  - '*'
+
+allowedCorsOrigins:
+  - 'http://localhost:3000'
+  - 'http://127.0.0.1:3000'
+
+postgres:
+  name: 'mind_palace'
+  user: 'mind_palace'
+  password: '1Qetuwry'
+  host: 'localhost'
+  port: 5432
+
+smtp:
+  host: 'smtp.gmail.com'
+  port: 587
+  user: 'lobster.kraft@gmail.com'
+  password: 'bwskavgsesroszvh'
+  useTLS: true

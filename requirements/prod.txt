@@ -8,3 +8,5 @@ djangorestframework-simplejwt==4.7.*
 psycopg2-binary==2.9.1
 djangorestframework-recursive==0.1.*
 pillow==8.4.*
+djoser==2.1.0
+pyyaml==6.0
