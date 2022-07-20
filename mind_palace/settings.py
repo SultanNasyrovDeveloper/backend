@@ -99,7 +99,7 @@ DJOSER = {
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
-        'user': 'mind_palace.user.serializers.UserSerializer',
+        'user': 'djoser.serializers.UserSerializer',
         'user_create': 'mind_palace.user.serializers.UserSerializer',
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     }
@@ -184,8 +184,8 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 STATIC_ROOT = Path(BASE_DIR, 'static')
-MEDIA_URL = '/media/'
+MEDIA_URL = '/mediafiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

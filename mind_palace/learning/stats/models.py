@@ -1,7 +1,9 @@
 from datetime import datetime
 
 from django.db import models
+
 from django.dispatch import receiver
+from django.utils import timezone
 
 from mind_palace.learning.stats.enums import UserNodeLearningStatusEnum
 from mind_palace.palace.node.models import PalaceNode
@@ -24,9 +26,9 @@ class NodeLearningStatistics(models.Model):
     easiness = models.DecimalField(max_digits=4, decimal_places=2, default=2.6)
     average_rate = models.DecimalField(max_digits=2, decimal_places=1, default=0)
 
-    last_repetition = models.DateTimeField(default=datetime.utcnow)
-    next_repetition = models.DateTimeField(default=datetime.utcnow)
-    last_view = models.DateTimeField(default=datetime.utcnow)
+    last_repetition = models.DateTimeField(default=timezone.now)
+    next_repetition = models.DateTimeField(default=timezone.now)
+    last_view = models.DateTimeField(default=timezone.now)
 
 
 @receiver(models.signals.post_save, sender=PalaceNode)
