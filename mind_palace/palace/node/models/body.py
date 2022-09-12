@@ -1,10 +1,6 @@
 from django.db import models
-from django.dispatch import receiver
-from django.db.models.signals import post_save
 
 from mind_palace.palace.node.enums import NodeBodyTypeEnum
-
-from .node import PalaceNode
 
 
 class Body(models.Model):
@@ -21,9 +17,3 @@ class Body(models.Model):
     )
     meta = models.JSONField(default=dict)
     data = models.JSONField(default=dict)
-
-
-@receiver(post_save, sender=PalaceNode)
-def create_node_body(instance, created, **kwargs):
-    if created:
-        Body.objects.create(node=instance)

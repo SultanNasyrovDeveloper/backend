@@ -1,8 +1,6 @@
 from django.db import models
-from django.dispatch import dispatcher
 from django.contrib.postgres.fields import ArrayField
 
-from mind_palace.palace.node.models import MindPalaceNode
 from .enums import LearningCardField
 
 

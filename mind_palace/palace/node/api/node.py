@@ -2,6 +2,7 @@ from datetime import datetime
 
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from mind_palace.palace.node import models, serializers, filters
@@ -32,3 +33,8 @@ class MindPalaceNodeViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def update(self, request, *args, **kwargs):
+        if 'body' in request.data:
+            raise ValidationError('Node body should be updated through body endpoint.')
+        return super().update(request, *args, **kwargs)

@@ -25,7 +25,7 @@ class MindPalaceNodeSerializer(serializers.ModelSerializer):
     ancestors = serializers.SerializerMethodField(read_only=True)
     learning_statistics = UserLearningStatisticsSerializer(read_only=True)
     media = NodeMediaSerializer(many=True, read_only=True)
-    body = NodeBodySerializer(read_only=True)
+    body = NodeBodySerializer(required=False)
 
     class Meta:
         model = models.PalaceNode
@@ -43,6 +43,14 @@ class MindPalaceNodeSerializer(serializers.ModelSerializer):
             {'id': ancestor.id, 'name': ancestor.name}
             for ancestor in node.get_ancestors(include_self=True)
         ]
+
+    def create(self, validated_data) -> models.PalaceNode:
+        data = dict(validated_data)
+        body_data = data.pop('body', {})
+        node = self.Meta.model.objects.create(**data)
+        if body_data:
+            models.Body.objects.create(node=node, **body_data)
+        return node
 
 
 class TreeNodeSerializer(serializers.Serializer):
