@@ -85,18 +85,18 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT', ),
 }
 
-DOMAIN = 'localhost:3000'
-SITE_NAME = 'Mind Palace'
+DOMAIN = config.get('frontendUrl')
+SITE_NAME = config.get('siteName')
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'SET_PASSWORD_RETYPE': True,
-    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'auth/user/activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE': True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/password/reset/{uid}/{token}',
+    'ACTIVATION_URL': 'auth/user/activation/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'user': 'mind_palace.user.serializers.UserSerializer',

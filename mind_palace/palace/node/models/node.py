@@ -2,6 +2,8 @@ from django.db import models
 
 from mptt.models import MPTTModel, TreeForeignKey
 
+from ..managers import NodeManager
+
 
 class PalaceNode(MPTTModel):
     
@@ -23,3 +25,5 @@ class PalaceNode(MPTTModel):
 
     description = models.TextField('Description', default='', null=True, blank=True)
     tags = models.ManyToManyField('node.Tag', verbose_name='Tags')
+
+    objects = NodeManager()

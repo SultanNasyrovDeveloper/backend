@@ -1,7 +1,9 @@
 debug: true
 secretKey: 'yMa*_=4^3h:bL^bz{wmM=K@5FqL)CE^Pg&9;^R4Y5hyL;]]7ERWT,XL#(KKa}m)wLtFP,/fviD@n!.Z+'
 
-frontendUrl: 'localhost'
+siteName: 'Mindase'
+
+frontendUrl: 'localhost:3000'
 
 allowedHosts:
   - '*'

@@ -47,9 +47,7 @@ class MindPalaceNodeSerializer(serializers.ModelSerializer):
     def create(self, validated_data) -> models.PalaceNode:
         data = dict(validated_data)
         body_data = data.pop('body', {})
-        node = self.Meta.model.objects.create(**data)
-        if body_data:
-            models.Body.objects.create(node=node, **body_data)
+        node = self.Meta.model.objects.create(body_data=body_data, **data)
         return node
 
 
