@@ -12,6 +12,8 @@ with open('config.yml') as file:
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Basic settings
 DEBUG = config.get('debug', False)
 SECRET_KEY = config.get('secretKey')
 ALLOWED_HOSTS = config.get('allowedHosts')
@@ -81,10 +83,16 @@ REST_FRAMEWORK = {
 }
 
 
+# Authentication related settings
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT', ),
 }
-
 DOMAIN = config.get('frontendUrl')
 SITE_NAME = config.get('siteName')
 DJOSER = {
@@ -162,20 +170,7 @@ DATABASES = {
 # }
 
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+
 
 
 LANGUAGE_CODE = 'en-us'
