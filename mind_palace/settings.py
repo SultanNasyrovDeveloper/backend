@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'mind_palace.palace',
     'mind_palace.palace.node',
     'mind_palace.learning',
-    'mind_palace.learning.stats',
+    'mind_palace.learning.statistics',
     'mind_palace.learning.session',
     # 'mind_palace.learning.node_config',
 ]
@@ -170,9 +170,6 @@ DATABASES = {
 # }
 
 
-
-
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -185,3 +182,8 @@ STATIC_ROOT = Path(BASE_DIR, 'static')
 MEDIA_URL = '/mediafiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Application settings
+
+# in minutes
+UPDATE_NODE_AFTER_MINUTES = config.get('app', {}).get('updateNodeViewsAfter', 30)

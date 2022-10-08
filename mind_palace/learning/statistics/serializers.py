@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mind_palace.learning.stats import models
+from mind_palace.learning.statistics import models
 
 
 class UserLearningStatisticsSerializer(serializers.ModelSerializer):

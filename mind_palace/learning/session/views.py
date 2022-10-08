@@ -29,7 +29,6 @@ class LearningSessionViewSet(ModelViewSet):
         """
         Start new learning session.
         """
-        # TODO: Make atomic
         models.UserLearningSession.objects.finish_expired(user_id=request.user.id)
         user_active_sessions = models.UserLearningSession.objects.filter(
             status=UserLearningSessionStatusEnum.active
@@ -43,13 +42,6 @@ class LearningSessionViewSet(ModelViewSet):
         session_data['user_id'] = request.user.id
         new_session = models.UserLearningSession.objects.start(**session_data)
         return Response(self.serializer_class(new_session).data)
-
-    @action(detail=True, methods=('GET', ))
-    def current(self, request, *args, **kwargs):
-        """
-        Retrieve current learning node id.
-        """
-        return Response(self.get_object().get_current_node_id())
 
     @action(detail=True, methods=('POST', ))
     def study_node(self, request, *args, **kwargs):

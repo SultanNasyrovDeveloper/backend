@@ -4,12 +4,12 @@ from django.conf import settings
 from django.db import models
 
 from mind_palace.learning.session.enums import UserLearningSessionStatusEnum
-from mind_palace.learning.stats.models import NodeLearningStatistics
+from mind_palace.learning.statistics.models import NodeLearningStatistics
 
 
 class UserLearningSessionManager(models.Manager):
 
-    def start(self, **session_data) -> 'UserLearningSession':
+    def start(self, **session_data):
         """
         Start new learning session.
 
@@ -18,7 +18,7 @@ class UserLearningSessionManager(models.Manager):
             Must be validated before. Use UserLearningSessionSerializer.
         """
         session = self.create(**session_data)
-        session.queue = session.get_strategy().generate_learning_queue(session.root)
+        session.queue = session.get_strategy().generate_queue(session.root)
         session.save()
         return session
 
@@ -26,7 +26,6 @@ class UserLearningSessionManager(models.Manager):
         """
         Handle study node by user.
         """
-        # TODO: Maybe make atomic.
         node_id = kwargs.pop('node')
         node_learning_stats = NodeLearningStatistics.objects.get(node_id=node_id)
         session.get_strategy().study_node(node_learning_stats, **kwargs)
@@ -36,7 +35,7 @@ class UserLearningSessionManager(models.Manager):
             / session.total_repetitions
         )
         session.average_rating = round(session.average_rating, 1)
-        session.last_repetition_datetime = datetime.utcnow()
+        session.last_repetition_datetime = datetime.now()
         session.remove_node_from_queue(node_id)
         session.add_repeated_node(node_id)
         session.save()
@@ -50,7 +49,7 @@ class UserLearningSessionManager(models.Manager):
             session.delete()
             return
         session.queue = []
-        session.finish_datetime = datetime.utcnow()
+        session.finish_datetime = datetime.now()
         session.status = UserLearningSessionStatusEnum.finished
         session.save()
         return session
@@ -65,7 +64,7 @@ class UserLearningSessionManager(models.Manager):
         sessions.update(
             status=UserLearningSessionStatusEnum.finished,
             queue=[],
-            finish_datetime=datetime.utcnow()
+            finish_datetime=datetime.now()
         )
 
     def finish_expired(self, initial_queryset=None, **query_params) -> None:

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework_recursive.fields import RecursiveField
 
 from mind_palace.palace.node import models
-from mind_palace.learning.stats.serializers import UserLearningStatisticsSerializer
+from mind_palace.learning.statistics.serializers import UserLearningStatisticsSerializer
 
 from .media import NodeMediaSerializer
 from .body import NodeBodySerializer

@@ -3,7 +3,7 @@ from django.db import models
 from mind_palace.palace.node.enums import NodeMediaTypeEnum
 
 
-class Media(models.Model):
+class NodeMedia(models.Model):
     """
     Responsible for storing one media object with image or other king of media.
 

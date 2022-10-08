@@ -5,7 +5,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.utils import timezone
 
-from mind_palace.learning.stats.enums import UserNodeLearningStatusEnum
+from mind_palace.learning.statistics.enums import UserNodeLearningStatusEnum
 from mind_palace.palace.node.models import PalaceNode
 
 

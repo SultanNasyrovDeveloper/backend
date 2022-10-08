@@ -3,7 +3,7 @@ from django.db import models
 from mind_palace.palace.node.enums import NodeBodyTypeEnum
 
 
-class Body(models.Model):
+class NodeBody(models.Model):
 
     node = models.OneToOneField(
         'node.PalaceNode',

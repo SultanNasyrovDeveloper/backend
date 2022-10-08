@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from mind_palace.learning.stats import views
+from mind_palace.learning.statistics import views
 
 
 router = DefaultRouter()

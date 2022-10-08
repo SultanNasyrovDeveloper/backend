@@ -8,21 +8,24 @@ from mind_palace.learning.strategy.base import BaseLearningStrategy
 
 class SuperMemo2LearningStrategy(BaseLearningStrategy):
 
-    def generate_learning_queue(self, root_node):
+    def generate_queue(self, root_node):
+        """
+        Generates ordered list of nodes that can be used as a queue of nodes to repeat.
+        """
         queue = list(root_node.get_descendants(include_self=True).order_by(
             'learning_statistics__next_repetition'
         ).values_list('id', flat=True))
         random.shuffle(queue)
         return queue
 
-    def study_node(self, node_learning_stats, rating):
+    def study_node(self, node_learning_stats, rating: float):
         """
         Handle node repetition using supermemo2 strategy.
 
         https://www.supermemo.com/ru/archives1990-2015/english/ol/sm2
         This is implementation of algorithm described in the link.
         Repetition strategy calculates optimal next repetition datetime of some data based on
-        user repetition rating(subjective repetition quality rating).
+        user repetition rating(subjective repetition quality evaluation).
         """
 
         if rating < 3:

@@ -7,8 +7,7 @@ from mind_palace.palace.node.enums import NodeBodyTypeEnum
 from mind_palace.palace.node.models import PalaceNode
 
 
-class BaseMindPalace(models.Model):
-
+class UserMindPalace(models.Model):
     root = models.OneToOneField(
         'node.PalaceNode',
         on_delete=models.SET_DEFAULT,
@@ -17,12 +16,6 @@ class BaseMindPalace(models.Model):
         blank=True,
         related_name='mind_palace'
     )
-
-    class Meta:
-        abstract = True
-
-
-class UserMindPalace(BaseMindPalace):
 
     user = models.OneToOneField(
         'user.User',

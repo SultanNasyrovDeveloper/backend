@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from mind_palace.learning.stats import models, serializers
+from mind_palace.learning.statistics import models, serializers
 
 
 class NodeLearningStatisticsViewSet(ModelViewSet):

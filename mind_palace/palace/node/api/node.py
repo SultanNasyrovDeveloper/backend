@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
+from django.conf import settings
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
@@ -14,12 +15,20 @@ class MindPalaceNodeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.MindPalaceNodeSerializer
     filterset_class = filters.MindPalaceNodeFilter
 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.NodeBriefInfoSerializer
+        return super().get_serializer_class()
+
     def retrieve(self, request, pk=None, *args, **kwargs):
-        """
-        Updates node views everytime use sees its own node.
-        """
         node = self.get_object()
-        if node.owner_id == request.user.id:
+        should_update_views_count = (
+            node.owner_id == request.user.id
+            and datetime.now() > node.last_view + timedelta(
+                minutes=settings.UPDATE_NODE_AFTER_MINUTES
+            )
+        )
+        if should_update_views_count:
             node.learning_statistics.views += 1
             node.learning_statistics.last_view = datetime.utcnow()
             node.learning_statistics.save()
