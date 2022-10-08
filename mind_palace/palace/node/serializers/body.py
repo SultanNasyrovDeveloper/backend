@@ -6,7 +6,7 @@ from mind_palace.palace.node import models
 class NodeBodySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.Body
+        model = models.NodeBody
         fields = ('id', 'type', 'meta', 'data', 'node_id')
 
     def update(self, instance, validated_data):

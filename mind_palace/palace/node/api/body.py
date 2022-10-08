@@ -4,5 +4,5 @@ from .. import models, serializers
 
 
 class NodeBodyViewSet(ModelViewSet):
-    queryset = models.Body.objects.all()
+    queryset = models.NodeBody.objects.all()
     serializer_class = serializers.NodeBodySerializer
