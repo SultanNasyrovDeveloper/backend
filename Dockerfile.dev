@@ -8,8 +8,6 @@ RUN pip install --upgrade pip
 COPY requirements/prod.txt requirements.txt
 RUN pip install -r requirements.txt
 
-RUN python manage.py makemigrations
-
 COPY . .
 
 CMD python manage.py runserver
