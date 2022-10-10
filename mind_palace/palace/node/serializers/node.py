@@ -23,14 +23,14 @@ class MindPalaceNodeSerializer(serializers.ModelSerializer):
     Provide full mind palace node information.
     """
     ancestors = serializers.SerializerMethodField(read_only=True)
-    learning_statistics = UserLearningStatisticsSerializer(read_only=True)
+    statistics = UserLearningStatisticsSerializer(read_only=True)
     media = NodeMediaSerializer(many=True, read_only=True)
     body = NodeBodySerializer(required=False)
 
     class Meta:
         model = models.PalaceNode
         fields = (
-            'id', 'ancestors', 'learning_statistics', 'media', 'name', 'description',
+            'id', 'ancestors', 'statistics', 'media', 'name', 'description',
             'children', 'parent', 'owner', 'body'
         )
         read_only_fields = ('children', )
@@ -57,4 +57,4 @@ class TreeNodeSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
     children = serializers.ListField(child=RecursiveField(), source='get_children')
-    learning_statistics = UserLearningStatisticsSerializer(read_only=True)
+    statistics = UserLearningStatisticsSerializer(read_only=True)

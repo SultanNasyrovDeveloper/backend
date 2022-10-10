@@ -12,7 +12,7 @@ from mind_palace.palace.node.models import PalaceNode
 class NodeLearningStatistics(models.Model):
 
     node = models.OneToOneField(
-        'node.PalaceNode', on_delete=models.CASCADE, related_name='learning_statistics',
+        'node.PalaceNode', on_delete=models.CASCADE, related_name='statistics',
     )
 
     status = models.CharField(
